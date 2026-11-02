@@ -1,0 +1,65 @@
+
+class HashTable:
+    def __init__(self):
+        self.size = 10
+        self.table = [[] for i in range(self.size)]
+
+    def hash_function(self, key):
+        return key % self.size
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+
+        for item in self.table[index]:
+            if item[0] == key:
+                item[1] = value
+                print("Key updated successfully")
+                return
+
+        self.table[index].append([key, value])
+        print("Key inserted successfully")
+
+    def search(self, key):
+        index = self.hash_function(key)
+
+        for item in self.table[index]:
+            if item[0] == key:
+                print("Value found:", item[1])
+                return
+
+        print("Key not found")
+
+    def delete(self, key):
+        index = self.hash_function(key)
+
+        for item in self.table[index]:
+            if item[0] == key:
+                self.table[index].remove(item)
+                print("Key deleted successfully")
+                return
+
+        print("Key not found")
+
+    def display(self):
+        for i in range(self.size):
+            print(i, ":", self.table[i])
+
+
+h = HashTable()
+
+h.insert(23, "Apple")
+h.insert(33, "Banana")
+h.insert(43, "Mango")
+h.insert(15, "Orange")
+
+print("\nHash Table:")
+h.display()
+
+print("\nSearching:")
+h.search(33)
+
+print("\nDeleting:")
+h.delete(23)
+
+print("\nUpdated Hash Table:")
+h.display()
