@@ -1,0 +1,79 @@
+
+class ExtendibleHashing:
+    def __init__(self, bucket_size=2):
+        self.bucket_size = bucket_size
+        self.global_depth = 1
+        self.directory = {0: [], 1: []}
+
+    def hash_function(self, key):
+        return key & ((1 << self.global_depth) - 1)
+
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        bucket = self.directory[index]
+
+        if len(bucket) < self.bucket_size:
+            bucket.append((key, value))
+            print("Key inserted successfully")
+            return
+
+        self.global_depth += 1
+        new_directory = {}
+
+        for i in range(1 << self.global_depth):
+            new_directory[i] = []
+
+        for old_bucket in self.directory.values():
+            for k, v in old_bucket:
+                new_index = k & ((1 << self.global_depth) - 1)
+                new_directory[new_index].append((k, v))
+
+        self.directory = new_directory
+        self.insert(key, value)
+
+    def search(self, key):
+        index = self.hash_function(key)
+
+        for k, v in self.directory[index]:
+            if k == key:
+                print("Value found:", v)
+                return
+
+        print("Key not found")
+
+    def delete(self, key):
+        index = self.hash_function(key)
+
+        for item in self.directory[index]:
+            if item[0] == key:
+                self.directory[index].remove(item)
+                print("Key deleted successfully")
+                return
+
+        print("Key not found")
+
+    def display(self):
+        print("Global Depth:", self.global_depth)
+
+        for index, bucket in self.directory.items():
+            print(index, ":", bucket)
+
+
+h = ExtendibleHashing()
+
+h.insert(10, "Apple")
+h.insert(20, "Banana")
+h.insert(30, "Mango")
+h.insert(40, "Orange")
+
+print("\nHash Table:")
+h.display()
+
+print("\nSearching:")
+h.search(20)
+
+print("\nDeleting:")
+h.delete(10)
+
+print("\nUpdated Hash Table:")
+h.display()
