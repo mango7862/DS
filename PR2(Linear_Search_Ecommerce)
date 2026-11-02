@@ -1,0 +1,16 @@
+
+customer_ids = [10, 20, 30, 40, 50, 60, 70]
+
+search_id = int(input("Enter customer account ID to search: "))
+
+found = False
+
+for i in range(len(customer_ids)):
+    if customer_ids[i] == search_id:
+        found = True
+        break
+
+if found:
+    print("Customer account ID found")
+else:
+    print("Customer account ID not found")
