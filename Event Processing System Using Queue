@@ -1,0 +1,42 @@
+
+from collections import deque
+
+event_queue = deque()
+
+def add_event(event):
+    event_queue.append(event)
+    print("Event added:", event)
+
+def process_event():
+    if event_queue:
+        event = event_queue.popleft()
+        print("Processed event:", event)
+    else:
+        print("No events to process")
+
+def display_events():
+    if event_queue:
+        print("Pending events:", list(event_queue))
+    else:
+        print("No pending events")
+
+def cancel_event(event):
+    if event in event_queue:
+        event_queue.remove(event)
+        print("Event cancelled:", event)
+    else:
+        print("Event not found")
+
+add_event("Event 1")
+add_event("Event 2")
+add_event("Event 3")
+
+display_events()
+
+process_event()
+
+display_events()
+
+cancel_event("Event 3")
+
+display_events()
