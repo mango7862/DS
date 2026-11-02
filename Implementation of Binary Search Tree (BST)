@@ -1,0 +1,168 @@
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BST:
+
+    # Insert a node
+    def insert(self, root, data):
+        if root is None:
+            return Node(data)
+
+        if data < root.data:
+            root.left = self.insert(root.left, data)
+        elif data > root.data:
+            root.right = self.insert(root.right, data)
+        else:
+            print("Duplicate values are not allowed!")
+
+        return root
+
+    # Search for a node
+    def search(self, root, key):
+        if root is None or root.data == key:
+            return root
+
+        if key < root.data:
+            return self.search(root.left, key)
+
+        return self.search(root.right, key)
+
+    # Find minimum value node
+    def find_min(self, root):
+        while root.left is not None:
+            root = root.left
+        return root
+
+    # Delete a node
+    def delete(self, root, key):
+        if root is None:
+            return root
+
+        if key < root.data:
+            root.left = self.delete(root.left, key)
+
+        elif key > root.data:
+            root.right = self.delete(root.right, key)
+
+        else:
+            # Node with no child or one child
+            if root.left is None:
+                return root.right
+
+            elif root.right is None:
+                return root.left
+
+            # Node with two children
+            temp = self.find_min(root.right)
+            root.data = temp.data
+            root.right = self.delete(root.right, temp.data)
+
+        return root
+
+    # Display using inorder traversal
+    def display(self, root):
+        if root is not None:
+            self.display(root.left)
+            print(root.data, end=" ")
+            self.display(root.right)
+
+
+# Main program
+tree = BST()
+root = None
+
+while True:
+    print("\n\n--- BINARY SEARCH TREE ---")
+    print("1. Insert")
+    print("2. Delete")
+    print("3. Search")
+    print("4. Display")
+    print("5. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        value = int(input("Enter value to insert: "))
+        root = tree.insert(root, value)
+        print("Node inserted successfully!")
+
+    elif choice == 2:
+        value = int(input("Enter value to delete: "))
+
+        if tree.search(root, value) is None:
+            print("Value not found!")
+        else:
+            root = tree.delete(root, value)
+            print("Node deleted successfully!")
+
+    elif choice == 3:
+        value = int(input("Enter value to search: "))
+
+        if tree.search(root, value):
+            print("Element found!")
+        else:
+            print("Element not found!")
+
+    elif choice == 4:
+        print("BST (Inorder Traversal): ", end="")
+        tree.display(root)
+        print()
+
+    elif choice == 5:
+        print("Exiting program...")
+        break
+
+    else:
+        print("Invalid choice! Try again.")
+
+
+
+
+
+
+SAMPLE OUTPUT:
+
+--- BINARY SEARCH TREE ---
+1. Insert
+2. Delete
+3. Search
+4. Display
+5. Exit
+
+Enter your choice: 1
+Enter value to insert: 50
+Node inserted successfully!
+
+Enter your choice: 1
+Enter value to insert: 30
+Node inserted successfully!
+
+Enter your choice: 1
+Enter value to insert: 70
+Node inserted successfully!
+
+Enter your choice: 1
+Enter value to insert: 20
+Node inserted successfully!
+
+Enter your choice: 4
+BST (Inorder Traversal): 20 30 50 70
+
+Enter your choice: 3
+Enter value to search: 30
+Element found!
+
+Enter your choice: 2
+Enter value to delete: 30
+Node deleted successfully!
+
+Enter your choice: 4
+BST (Inorder Traversal): 20 50 70
+
+Enter your choice: 5
+Exiting program...
