@@ -1,0 +1,81 @@
+
+class HashTable:
+    def __init__(self, size=10):
+        self.size = size
+        self.table = [None] * size
+
+    def hash_function(self, key):
+        return key % self.size
+
+    def insert(self, key):
+        index = self.hash_function(key)
+
+        for i in range(self.size):
+            pos = (index + i) % self.size
+
+            if self.table[pos] is None or self.table[pos] == "DELETED":
+                self.table[pos] = key
+                print("Key inserted successfully")
+                return
+
+            if self.table[pos] == key:
+                print("Key already exists")
+                return
+
+        print("Hash table is full")
+
+    def search(self, key):
+        index = self.hash_function(key)
+
+        for i in range(self.size):
+            pos = (index + i) % self.size
+
+            if self.table[pos] is None:
+                break
+
+            if self.table[pos] == key:
+                print("Key found at index:", pos)
+                return
+
+        print("Key not found")
+
+    def delete(self, key):
+        index = self.hash_function(key)
+
+        for i in range(self.size):
+            pos = (index + i) % self.size
+
+            if self.table[pos] is None:
+                break
+
+            if self.table[pos] == key:
+                self.table[pos] = "DELETED"
+                print("Key deleted successfully")
+                return
+
+        print("Key not found")
+
+    def display(self):
+        for i in range(self.size):
+            print(i, ":", self.table[i])
+
+
+h = HashTable()
+
+h.insert(23)
+h.insert(33)
+h.insert(43)
+h.insert(15)
+h.insert(25)
+
+print("\nHash Table:")
+h.display()
+
+print("\nSearching:")
+h.search(33)
+
+print("\nDeleting:")
+h.delete(33)
+
+print("\nUpdated Hash Table:")
+h.display()
